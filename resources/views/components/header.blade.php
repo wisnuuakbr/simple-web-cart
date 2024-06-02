@@ -1,9 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
-            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,8 +15,8 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Cart -->
-                    <a class="btn btn-outline-dark" href="#">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge bg-danger">{{ count((array) session('cart')) }}</span>
+                    <a class="btn btn-outline-dark" href="{{ route('cart') }}">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge bg-danger total-item">{{ $totalItems }}</span>
                     </a>
                     <!-- Authentication Links -->
                     @guest
