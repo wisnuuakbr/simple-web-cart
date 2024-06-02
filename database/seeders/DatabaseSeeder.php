@@ -25,5 +25,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('pass123'),
             'remember_token' => Str::random(10),
         ]);
+
+        // Call ProductsSeeder
+        $this->call(ProductsSeeder::class);
     }
 }
