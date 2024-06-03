@@ -6,30 +6,33 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Carts;
+use App\Models\User;
 
 class ProductsController extends Controller
 {
     // Show the index page
     public function index()
     {
-        $products = Products::all();
+        $products = Products::paginate(24);
         $totalItems = $this->getTotalItems();
 
         return view('products.index', compact('products', 'totalItems'));
     }
 
-    // cart view
+    // Cart page
     public function cart()
     {
         $user_id = auth()->id();
         $cartItems = Carts::where('user_id', $user_id)->with('product')->get();
         $totalItems = $this->getTotalItems();
         $totalPrice = $this->getTotalPrice();
+        // Get coupon
+        $couponEarned = $this->generateCoupon($user_id);
 
-        return view('products.cart', compact('cartItems', 'totalItems', 'totalPrice'));
+        return view('products.cart', compact('cartItems', 'totalItems', 'totalPrice', 'couponEarned'));
     }
 
-    // function to add product to cart
+    // Function to add product to cart
     public function addCart($id)
     {
         $user_id = auth()->id();
@@ -55,7 +58,7 @@ class ProductsController extends Controller
         ]);
     }
 
-    // function to delete product from cart
+    // Function to delete product from cart
     public function deleteCart(Request $request)
     {
         if ($request->id) {
@@ -65,6 +68,55 @@ class ProductsController extends Controller
                 ->delete();
         }
         return redirect()->back()->with('success', 'Product successfully deleted!');
+    }
+
+    // Checkout page
+    public function checkout()
+    {
+        $user_id = auth()->id();
+        $user = User::find($user_id);
+
+        $cartItems = Carts::where('user_id', $user_id)->with('product')->get();
+        $totalItems = $this->getTotalItems();
+        $totalPrice = $this->getTotalPrice();
+        // Get total coupons earned
+        $totalCouponsEarned = $this->generateCoupons($cartItems, $totalPrice);
+
+        return view('products.checkout', compact('cartItems', 'totalItems', 'totalPrice', 'totalCouponsEarned', 'user'));
+    }
+
+    // Function generate coupon per item
+    private function generateCoupon($user_id)
+    {
+        $cartItems = Carts::where('user_id', $user_id)->with('product')->get();
+        $coupons = [];
+        foreach ($cartItems as $item) {
+            if ($item->product->price > 50000) {
+                $coupons[$item->product_id] = $item->quantity;
+            } else {
+                $coupons[$item->product_id] = 0;
+            }
+        }
+        return $coupons;
+    }
+
+    // Generate Total Coupons
+    private function generateCoupons($cartItems, $totalPrice)
+    {
+        $totalCouponsFromPrice = 0;
+        foreach ($cartItems as $item) {
+            if ($item->product->price > 50000) {
+                $totalCouponsFromPrice += $item->quantity;
+            }
+        }
+
+        // Calculate total coupons based on total purchase (every 100000 gets 1 coupon)
+        $totalCouponsFromTotalPurchase = floor($totalPrice / 100000);
+
+        // Total coupons earned
+        $totalCouponsEarned = $totalCouponsFromPrice + $totalCouponsFromTotalPurchase;
+
+        return $totalCouponsEarned;
     }
 
     // Function to get total items in cart
@@ -85,5 +137,4 @@ class ProductsController extends Controller
         }
         return $totalPrice;
     }
-
 }

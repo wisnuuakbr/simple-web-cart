@@ -15,18 +15,17 @@
 
     <!-- Scripts -->
     @include('components.styles')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div id="app">
 
     @include('components.header')
 
-    <main class="py-4">
+    <main>
         @yield('content')
     </main>
 
-    @include('components.footer')
+    {{-- @include('components.footer') --}}
 
     @include('components.scripts')
 

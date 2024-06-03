@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container">
+        <div class="container pt-2">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -9,14 +9,15 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('product') }}">Product</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('product') }}"><i class="fad fa-store fa-lg"></i></a>
                       </li>
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Cart -->
-                    <a class="btn btn-outline-dark" href="{{ route('cart') }}">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart <span class="badge bg-danger total-item">{{ $totalItems }}</span>
+                    <a class="btn position-relative" href="{{ route('cart') }}" style="width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">
+                        <i class="fad fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle badge rounded-pill total-item">{{ $totalItems }}</span>
                     </a>
                     <!-- Authentication Links -->
                     @guest
@@ -34,6 +35,7 @@
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <i class="fas fa-user-circle fa-lg"></i>
                                 {{ Auth::user()->name }}
                             </a>
 
