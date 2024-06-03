@@ -9,16 +9,30 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('product') }}"><i class="fad fa-store fa-lg"></i></a>
-                      </li>
+                        <a class="nav-link {{ Route::currentRouteName() === 'product' ? 'active' : '' }}" aria-current="page" href="{{ route('product') }}">
+                            <i class="fad fa-store fa-lg"></i> Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() === 'history' ? 'active' : '' }}" aria-current="page" href="{{ route('history') }}">
+                            <i class="fad fa-history fa-lg"></i> History
+                        </a>
+                    </li>
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Cart -->
-                    <a class="btn position-relative" href="{{ route('cart') }}" style="width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">
-                        <i class="fad fa-shopping-cart fa-lg" aria-hidden="true"></i>
-                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle badge rounded-pill total-item">{{ $totalItems }}</span>
-                    </a>
+                    @if (request()->routeIs('history'))
+                        <a class="btn position-relative" href="{{ route('cart') }}" style="width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fad fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                            <span class="badge bg-danger cart-item position-absolute top-0 start-100 translate-middle badge rounded-pill total-item">0</span>
+                        </a>
+                    @else
+                        <a class="btn position-relative" href="{{ route('cart') }}" style="width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;">
+                            <i class="fad fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                            <span class="badge bg-danger cart-item position-absolute top-0 start-100 translate-middle badge rounded-pill total-item">{{ $totalItems }}</span>
+                        </a>
+                    @endif
                     <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))

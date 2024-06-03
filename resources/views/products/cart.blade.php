@@ -12,7 +12,7 @@
         <div class="card bg-white pt-2 mb-2">
             <div class="card-body">
                 <div class="row px-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <h6 class="text-right"><strong>Product</strong></h6>
                     </div>
                     <div class="col-md-2">
@@ -21,7 +21,7 @@
                     <div class="col-md-2">
                         <h6 class="text-center"><strong>Quantity</strong></h6>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <h6 class="text-center"><strong>Total Price</strong></h6>
                     </div>
                     <div class="col-md-2">
@@ -33,13 +33,13 @@
         @foreach($cartItems as $item)
         <div class="card bg-white">
             <div class="card-body">
-                <div class="row px-4">
-                    <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="row">
-                            <div class="col-md-6 pt-4">
-                                <img src="{{ $item->product->image }}" class="img-fluid" alt="Product Image">
+                            <div class="col-md-6 pt-2">
+                                <img src="{{ $item->product->image }}" class="img-fluid" style="width: 150px" alt="Product Image">
                             </div>
-                            <div class="col-md-6 pt-5">
+                            <div class="col-md-6 pt-4">
                                 <h4 class="card-title">{{ $item->product->name }}</h4>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                     <div class="col-md-2 pt-5">
                         <p class="text-center"><strong>{{ $item->quantity }}</p></strong>
                     </div>
-                    <div class="col-md-3 pt-5">
+                    <div class="col-md-2 pt-5">
                         <p class="text-center"><strong>Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</p></strong>
                     </div>
                     <div class="col-md-2 pt-5 text-center">
@@ -101,7 +101,7 @@
             <i class="fad fa-shopping-cart fa-3x"></i>
             <p class="text-muted"><strong>Your cart is Empty</strong></p>
             <div class="btn-shop">
-                <a href="{{ url('product') }}" class="btn btn-primary">Shop Now!</a>
+                <a href="{{ url('product') }}" class="btn btn-warning text-white">Shop Now!</a>
             </div>
         </div>
         @endif

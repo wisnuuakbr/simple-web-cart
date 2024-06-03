@@ -28,13 +28,13 @@
                     <div class="col-md-4">
                         <h6 class="text-right">Product Ordered</h6>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <h6 class="text-center">Price</h6>
                     </div>
                     <div class="col-md-2">
                         <h6 class="text-center">Amount</h6>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <h6 class="text-center">Item Sub Total</h6>
                     </div>
                 </div>
@@ -51,39 +51,70 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 pt-5">
+                    <div class="col-md-3 pt-5">
                         <p class="text-center"><strong>Rp {{ number_format($item->product->price, 0, ',', '.') }}</p></strong>
+                        <h6 class="text-center"><i class="fad fa-ticket" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> x {{ $couponPerItem[$item->product_id] }}</h6>
                     </div>
                     <div class="col-md-2 pt-5">
                         <p class="text-center"><strong>{{ $item->quantity }}</p></strong>
                     </div>
-                    <div class="col-md-2 pt-5">
+                    <div class="col-md-3 pt-5">
                         <p class="text-center"><strong>Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</p></strong>
                     </div>
                 </div>
                 @endforeach
                 <hr>
-                <div class="col-md-12">
-                    <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> You've earned {{ $totalCouponsEarned }} {{ Str::plural('coupon', $totalCouponsEarned) }} total</strong>
+                <div class="row pt-3">
+                    <div class="col-md-10">
+                        <h5>Order Total ({{ $totalItems }} Item) : </h5>
+                    </div>
+                    <div class="col-md-2">
+                        <h5><strong>Rp {{ number_format($totalPrice, 0, ',', '.') }}</strong></h5>
+                        <h6><i class="fad fa-ticket" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> x {{ $couponPerPurchase }}</h6>
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-8 pt-3">
-                        <h5>Order Total ({{ $totalItems }} Item) : </h5>
+                    <div class="col-md-12 pt-2">
+                        <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> You've earned {{ $totalCouponsEarned }} coupons total</strong>
                     </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-7 pt-3">
-                                <h5><strong>Rp {{ number_format($totalPrice, 0, ',', '.') }}</strong></h5>
-                            </div>
-                            <div class="col-5 pt-1">
-                                <a href="{{ url('product') }}" class="btn btn-warning text-white">Place Order</a>
-                            </div>
-                        </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <form action="{{ route('addhistory') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-warning text-white">Place Order</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    // History Process
+    document.querySelectorAll('.plcae-order').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            let productId = this.getAttribute('data-id');
+            let url = "{{ route('addhistory', ':id') }}".replace(':id', productId);
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{{ route('history') }}";
+                } else {
+                    throw new Error('Failed to add product!');
+                }
+            });
+        });
+    });
+    </script>
 @endsection

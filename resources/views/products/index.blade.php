@@ -62,7 +62,7 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
                 });
 
                 // Update total items count
-                let totalItemsElement = document.querySelector('.badge.bg-danger');
+                let totalItemsElement = document.querySelector('.cart-item');
                 if (totalItemsElement) {
                     totalItemsElement.textContent = data.totalItems;
                 }

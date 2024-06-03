@@ -22,6 +22,9 @@ class ProductsFactory extends Factory
             ['name' => 'MacBook Pro', 'image' => 'https://cdn.eraspace.com/media/catalog/product/m/a/macbook_air_m2_midnight_pdp_image_position-1__id_2.jpg', 'price' => 16999000],
             ['name' => 'AirPods Pro', 'image' => 'https://cdn.eraspace.com/media/catalog/product/a/p/apple_airpods_pro_generasi_ke-2_usb-c_1_1.jpg', 'price' => 3499000],
             ['name' => 'AirPods Max', 'image' => 'https://cdn.eraspace.com/media/catalog/product/a/p/apple_airpods_max_space_grey_1_2.jpg', 'price' => 9499000],
+            ['name' => 'Musha Braider Bracelet', 'image' => 'https://down-id.img.susercontent.com/file/id-11134207-7r98q-ll37i3rump02a8.jpg', 'price' => 45000],
+            ['name' => 'Musha Black Bracelet', 'image' => 'https://down-id.img.susercontent.com/file/id-11134207-7r98o-lkyqiwjbemwv5f.jpg', 'price' => 50000],
+            ['name' => 'Breakside Polo Cap', 'image' => 'https://down-id.img.susercontent.com/file/id-11134207-7r98u-lvvmdw5h17ou9a.jpg', 'price' => 120000],
         ];
 
         $product = $this->faker->randomElement($products);
