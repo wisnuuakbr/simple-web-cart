@@ -79,3 +79,7 @@ and run the npm
 ```bash
 $ npm run dev
 ```
+
+## User mock account
+User Email : wisnu@@gmail.com  
+User Pass  : pass123
