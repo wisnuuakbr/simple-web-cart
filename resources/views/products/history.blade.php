@@ -13,7 +13,13 @@
                 <div class="card-body">
                     <div class="row pt-2 px-2 mb-2">
                         <div class="col-md-6">
-                            <h6>Product Ordered</h6>
+                            <h6>Product Ordered | Status:
+                                @if ($item->status === 'open')
+                                    <span class="disabled btn btn-outline-primary btn-sm">{{ $item->status }}</span>
+                                @else
+                                    <span class="disabled btn btn-outline-danger btn-sm">{{ $item->status }}</span>
+                                @endif
+                            </h6>
                         </div>
                         <div class="col-md-6 d-flex justify-content-end">
                             <h6>Order has been arrived and accepted by: <strong>{{ $user->name }}</strong></h6>
@@ -26,18 +32,11 @@
                                 <div class="col-md-2">
                                     <img src="{{ $item->product->image }}" class="img-fluid" style="width: 150px;" alt="Product Image">
                                 </div>
-                                <div class="col-md-4 pt-5">
+                                <div class="col-md-5 pt-5">
                                     <h4 class="card-title">{{ $item->product->name }}</h4>
                                     <p class="quantity">x {{ $item->quantity }}</p>
                                 </div>
-                                <div class="col-md-2 pt-5">
-                                    @if ($item->status === 'open')
-                                        <span class="badge text-bg-primary">{{ $item->status }}</span>
-                                    @else
-                                        <span class="alert alert-warning">{{ $item->status }}</span>
-                                    @endif
-                                </div>
-                                <div class="col-md-4 pt-5 d-flex justify-content-end">
+                                <div class="col-md-5 pt-5 d-flex justify-content-end">
                                     <p class="text-center">Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</p>
                                 </div>
                             </div>
