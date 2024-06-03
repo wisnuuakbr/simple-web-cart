@@ -10,10 +10,15 @@
         <div class="card bg-white pt-2 mb-2">
             <div class="card-body">
                 <div class="row">
-                    <h5 class="text-muted"><i class="fas fa-map-marker-alt"></i> Delivery Address</h5>
-                    <span>
-                        <p><strong>{{ $user->name }}</strong></p>
-                    </span>
+                    <div class="col-md-6">
+                        <h5 class="text-muted"><i class="fas fa-map-marker-alt"></i> Delivery Address</h5>
+                        <span>
+                            <p><strong>{{ $user->name }}</strong></p>
+                        </span>
+                    </div>
+                    <div class="col-md-6 pt-3 px-4">
+                        <h6>Jl. Palagan Tentara Pelajar No.27, Jongkang, Sariharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</h6>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,7 +34,7 @@
                     <div class="col-md-2">
                         <h6 class="text-center">Amount</h6>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <h6 class="text-center">Item Sub Total</h6>
                     </div>
                 </div>
@@ -52,7 +57,7 @@
                     <div class="col-md-2 pt-5">
                         <p class="text-center"><strong>{{ $item->quantity }}</p></strong>
                     </div>
-                    <div class="col-md-4 pt-5">
+                    <div class="col-md-2 pt-5">
                         <p class="text-center"><strong>Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</p></strong>
                     </div>
                 </div>

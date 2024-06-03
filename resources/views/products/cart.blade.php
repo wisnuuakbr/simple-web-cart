@@ -69,9 +69,9 @@
             <div class="card-body">
                 <div class="col-md-12">
                     @if(isset($couponEarned[$item->product_id]) && $couponEarned[$item->product_id] > 0)
-                    <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> You've earned {{ $couponEarned[$item->product_id] }} {{ Str::plural('coupon', $couponEarned[$item->product_id]) }} for this product!</strong>
+                        <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> You've earned {{ $couponEarned[$item->product_id] }} coupon for this product!</strong>
                     @else
-                    <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> No coupons earned for this product.
+                        <i class="fad fa-ticket fa-lg" style="--fa-primary-opacity: 1; --fa-secondary-color: #0659ea; --fa-secondary-opacity: 0.2;"></i> No coupons earned for this product!
                     @endif
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8 pt-3">
-                        <h5><strong>Total ({{ $totalItems }}) Product</strong> :</h5>
+                        <h5>Total ({{ $totalItems }}) Product :</h5>
                     </div>
                     <div class="col-md-4">
                         <div class="row">
