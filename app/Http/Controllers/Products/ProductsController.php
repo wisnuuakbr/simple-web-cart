@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Carts;
 use App\Models\User;
+use App\Models\History;
 
 class ProductsController extends Controller
 {
@@ -40,7 +41,7 @@ class ProductsController extends Controller
         $cart = Carts::where('user_id', $user_id)
                     ->where('product_id', $id)
                     ->first();
-
+        // Cek cart condition
         if($cart) {
             $cart->quantity++;
             $cart->save();
@@ -75,17 +76,51 @@ class ProductsController extends Controller
     {
         $user_id = auth()->id();
         $user = User::find($user_id);
-
         $cartItems = Carts::where('user_id', $user_id)->with('product')->get();
         $totalItems = $this->getTotalItems();
         $totalPrice = $this->getTotalPrice();
-        // Get total coupons earned
-        $totalCouponsEarned = $this->generateCoupons($cartItems, $totalPrice);
+        // Get coupon per item
+        $couponPerItem = $this->generateCoupon($user_id);
+        // Get coupon per purchase
+        $couponPerPurchase = $this->generateTotalCoupons($totalPrice);
+        // Total coupon
+        $totalCouponsEarned = array_sum($couponPerItem) + $couponPerPurchase;
 
-        return view('products.checkout', compact('cartItems', 'totalItems', 'totalPrice', 'totalCouponsEarned', 'user'));
+        return view('products.checkout', compact('cartItems', 'totalItems', 'totalPrice', 'user', 'couponPerItem', 'couponPerPurchase', 'totalCouponsEarned'));
     }
 
-    // Function generate coupon per item
+    // History page
+    public function history()
+    {
+        $user_id = auth()->id();
+        $user = User::find($user_id);
+        $historyItem = History::where('user_id', $user_id)->with('product')->get();
+
+        return view('products.history', compact('historyItem', 'user'));
+    }
+
+    public function addHistory(Request $request)
+    {
+        $user_id = auth()->id();
+
+        // Get cart items
+        $cartItems = Carts::where('user_id', $user_id)->get();
+
+        foreach($cartItems as $item) {
+            History::create([
+                'user_id' => $user_id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity
+            ]);
+        }
+
+        // Clear cart
+        Carts::where('user_id', $user_id)->delete();
+
+        return redirect()->route('history')->with('success', 'Order placed successfully!');
+    }
+
+    // Generate coupon per item
     private function generateCoupon($user_id)
     {
         $cartItems = Carts::where('user_id', $user_id)->with('product')->get();
@@ -100,21 +135,11 @@ class ProductsController extends Controller
         return $coupons;
     }
 
-    // Generate Total Coupons
-    private function generateCoupons($cartItems, $totalPrice)
+    // Generate Total Coupons Per Purchase
+    private function generateTotalCoupons($totalPrice)
     {
-        $totalCouponsFromPrice = 0;
-        foreach ($cartItems as $item) {
-            if ($item->product->price > 50000) {
-                $totalCouponsFromPrice += $item->quantity;
-            }
-        }
-
-        // Calculate total coupons based on total purchase (every 100000 gets 1 coupon)
-        $totalCouponsFromTotalPurchase = floor($totalPrice / 100000);
-
-        // Total coupons earned
-        $totalCouponsEarned = $totalCouponsFromPrice + $totalCouponsFromTotalPurchase;
+        // Calculate total coupons based on total purchase (every 100.000 gets 1 coupon)
+        $totalCouponsEarned = floor($totalPrice / 100000);
 
         return $totalCouponsEarned;
     }
@@ -123,7 +148,8 @@ class ProductsController extends Controller
     private function getTotalItems()
     {
         $user_id = auth()->id();
-        return Carts::where('user_id', $user_id)->sum('quantity');
+        $totalItems = Carts::where('user_id', $user_id)->sum('quantity');
+        return $totalItems;
     }
 
     // Function to get total price in cart
