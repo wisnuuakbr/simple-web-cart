@@ -20,6 +20,7 @@ Clone the project and install dependencies:
 $ git clone https://github.com/wisnuuakbr/simple-web-cart.git
 $ cd simple-web-cart
 $ composer install
+$ npm install
 ```
 
 ## Configuration
@@ -56,14 +57,6 @@ Run the seeder:
 
 ```bash
 $ php artisan db:seed
-```
-
-## Install the npm
-
-Install NPM using the following command:
-
-```bash
-$ npm install
 ```
 
 ## Run Application
